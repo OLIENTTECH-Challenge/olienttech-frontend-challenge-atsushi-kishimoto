@@ -7,6 +7,7 @@ import ManufacturerHomePage from './pages/manufacturer';
 import ManufacturerLayout from './pages/manufacturer/layout';
 import ManufacturerOrderListPage from './pages/manufacturer/orders';
 import ManufacturerOrderPage from './pages/manufacturer/order';
+import ShopLoginPage from './pages/shop/login';
 import ShopLayout from './pages/shop/layout';
 import ShopHomePage from './pages/shop';
 
@@ -27,7 +28,10 @@ const router = createBrowserRouter([
   },
   {
     element: <ShopLayout />,
-    children: [{ path: '/shop', element: <ShopHomePage /> }],
+    children: [
+      { path: '/shop', element: <ShopHomePage /> },
+      { path: '/shop/login', element: <ShopLoginPage /> },
+    ],
   },
 ]);
 
