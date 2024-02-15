@@ -33,3 +33,33 @@ export const signin = async (req: SigninRequest) => {
     throw new Error();
   }
 };
+
+type FetchShopRequest = {
+  shopId: string;
+  token: string;
+};
+
+type FetchShopResponse = {
+  id: string;
+  name: string;
+  description: string;
+};
+
+export const fetchShop = async (req: FetchShopRequest) => {
+  const { shopId, token } = req;
+
+  const res = await fetch(`${APP_API_URL}/shops/${shopId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error();
+  }
+
+  const json = (await res.json()) as SuccessResponse<FetchShopResponse>;
+  return json.data;
+};

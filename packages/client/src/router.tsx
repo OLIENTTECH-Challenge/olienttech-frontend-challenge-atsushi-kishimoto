@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { manufacturerAuthLoader } from './loader';
+import { manufacturerAuthLoader, shopAuthLoader } from './loader';
 import HomePage from './pages';
 import ManufacturerLoginPage from './pages/manufacturer/login';
 import ManufacturerProductListPage from './pages/manufacturer/products';
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
   {
     element: <ShopLayout />,
     children: [
-      { path: '/shop', element: <ShopHomePage /> },
+      { path: '/shop', element: <ShopHomePage />, loader: shopAuthLoader },
       { path: '/shop/login', element: <ShopLoginPage /> },
     ],
   },
