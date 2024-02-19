@@ -10,6 +10,7 @@ import ManufacturerOrderPage from './pages/manufacturer/order';
 import ShopLoginPage from './pages/shop/login';
 import ShopLayout from './pages/shop/layout';
 import ShopHomePage from './pages/shop';
+import ShopManufacturerListPage from './pages/shop/manufacturers';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/shop', element: <ShopHomePage />, loader: shopAuthLoader },
       { path: '/shop/login', element: <ShopLoginPage /> },
+      { path: '/shop/manufacturers', element: <ShopManufacturerListPage />, loader: shopAuthLoader },
     ],
   },
 ]);

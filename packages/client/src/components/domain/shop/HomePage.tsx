@@ -1,4 +1,4 @@
-// import { LinkCard } from '@/components/base/LinkCard';
+import { LinkCard } from '@/components/base/LinkCard';
 import styles from './HomePage.module.css';
 import { useAuthLoaderData } from '@/hooks/useAuthLoaderData';
 import { useEffect, useState } from 'react';
@@ -46,18 +46,12 @@ export const ShopHomePage = () => {
           </div>
         )}
         <div className={styles.linkList}>
-          {/* <LinkCard
-            title='取り扱い商品一覧'
-            description='取り扱いしている商品の在庫を管理します'
-            href='/manufacturer/products'
+          <LinkCard
+            title='製造会社一覧'
+            description='取引可能な製造会社を管理します'
+            href='/shop/manufacturers'
             className={styles.linkCard}
           />
-          <LinkCard
-            title='発注書一覧'
-            description='販売会社からの発注書を管理します'
-            href='/manufacturer/orders'
-            className={styles.linkCard}
-          /> */}
         </div>
       </div>
     </>
