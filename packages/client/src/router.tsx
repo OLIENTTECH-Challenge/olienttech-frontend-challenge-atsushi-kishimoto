@@ -11,7 +11,7 @@ import ShopLoginPage from './pages/shop/login';
 import ShopLayout from './pages/shop/layout';
 import ShopHomePage from './pages/shop';
 import ShopManufacturerListPage from './pages/shop/manufacturers';
-import ShopManufacturerProductListPage from './pages/shop/manufacturer-products'
+import ShopManufacturerProductListPage from './pages/shop/manufacturer-products';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +34,11 @@ const router = createBrowserRouter([
       { path: '/shop', element: <ShopHomePage />, loader: shopAuthLoader },
       { path: '/shop/login', element: <ShopLoginPage /> },
       { path: '/shop/manufacturers', element: <ShopManufacturerListPage />, loader: shopAuthLoader },
-      { path: '/shop/manufacturers/:manufacturerId/products', element: <ShopManufacturerProductListPage />, loader: shopAuthLoader },
+      {
+        path: '/shop/manufacturers/:manufacturerId/products',
+        element: <ShopManufacturerProductListPage />,
+        loader: shopAuthLoader,
+      },
     ],
   },
 ]);

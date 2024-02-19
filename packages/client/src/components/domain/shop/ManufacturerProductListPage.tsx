@@ -1,7 +1,3 @@
 export const ManufacturerProductListPage = () => {
-  return (
-    <div>
-      test
-    </div>
-  );
+  return <div>test</div>;
 };
