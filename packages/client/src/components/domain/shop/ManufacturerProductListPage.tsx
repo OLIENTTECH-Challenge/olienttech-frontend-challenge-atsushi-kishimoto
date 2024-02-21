@@ -1,5 +1,7 @@
+import { TextInput } from '@/components/base/TextInput';
 import { Column, Table } from '@/components/case/Table';
 import { useEffect, useState } from 'react';
+import styles from './ManufacturerProductListPage.module.css';
 import { useParams } from 'react-router-dom';
 import * as shopApi from '@/api/shop';
 import { useAuthLoaderData } from '@/hooks/useAuthLoaderData';
@@ -51,9 +53,26 @@ export const ManufacturerProductListPage = () => {
       header: '在庫',
       accessor: (item) => item.stock,
     },
+    {
+      header: '発注',
+      accessor: (item) => (
+        <div className={styles.orderCell}>
+          <TextInput
+            type='number'
+            min={0}
+            name={`order_${item.id}`}
+            className={styles.orderInput}
+            defaultValue={0}
+            required
+          />
+        </div>
+      ),
+    },
   ];
 
   return (
-    <Table columns={columns} data={items} />
+    <form>
+      <Table columns={columns} data={items} />
+    </form>
   );
 };
