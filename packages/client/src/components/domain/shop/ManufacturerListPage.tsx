@@ -19,7 +19,6 @@ const usePartnerManufacturers = () => {
     });
   }, [shopId, token]);
 
-
   return { manufacturers };
 };
 
