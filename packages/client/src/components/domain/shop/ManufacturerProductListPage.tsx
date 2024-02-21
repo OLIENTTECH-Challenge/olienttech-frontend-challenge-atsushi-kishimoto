@@ -1,4 +1,5 @@
 import { TextInput } from '@/components/base/TextInput';
+import { Modal } from '@/components/base/Modal';
 import { Column, Table } from '@/components/case/Table';
 import { useEffect, useState } from 'react';
 import styles from './ManufacturerProductListPage.module.css';
@@ -27,6 +28,14 @@ const useHandleProducts = (manufacturerId: string) => {
 export const ManufacturerProductListPage = () => {
   const params = useParams();
   const manufacturerId = params['manufacturerId'];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { products } = useHandleProducts(manufacturerId!);
@@ -72,6 +81,14 @@ export const ManufacturerProductListPage = () => {
 
   return (
     <form>
+      <div>
+        <button type='button' onClick={openModal}>
+          モーダルを開く
+        </button>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <p>これはモーダルの中身です。</p>
+        </Modal>
+      </div>
       <Table columns={columns} data={items} />
     </form>
   );
