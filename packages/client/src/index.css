@@ -71,7 +71,7 @@
     --border-accent: #cfcfcf;
     --input: #e3e3e7;
     --ring: #17171b;
-    --overlay: rgba(0, 0, 0, 0.7);
+    --overlay: rgb(0 0 0 / 70%);
     --modal: #f9f9f9;
     --transparent: transparent;
     --z-index-overlay: 50;
