@@ -104,13 +104,14 @@ type FetchHandlingProductsRequest = {
 };
 
 type FetchHandlingProductsResponse = {
-  id: string;
-  name: string;
-  description: string;
-  categories: { id: string; name: string }[];
-  price: number;
-  stock: number;
-}[];
+  products: {
+    id: string;
+    name: string;
+    description: string;
+    categories: { id: string; name: string }[];
+    stock: number;
+  }[];
+};
 
 export const fetchHandlingProducts = async (
   req: FetchHandlingProductsRequest,
