@@ -1,5 +1,6 @@
 import styles from './Modal.module.css';
 import { ReactNode } from 'react';
+import { Button } from '@/components/base/Button';
 
 type ModalProps = {
   children: ReactNode;
@@ -15,7 +16,11 @@ export const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }: Modal
       <div className={styles.overlay} onClick={onClose} />
       <div className={styles.modal}>
         {children}
-        <button onClick={onClose}>閉じる</button>
+        <div className={styles.modalButton}>
+          <Button variant='outlined' onClick={onClose}>
+            閉じる
+          </Button>
+        </div>
       </div>
     </>
   );

@@ -3,6 +3,8 @@
   top: 50%;
   left: 50%;
   z-index: var(--z-index-popup);
+  width: 100%;
+  max-width: 1200px;
   padding: var(--spacing-lg);
   background-color: var(--modal);
   transform: translate(-50%, -50%);
@@ -13,4 +15,8 @@
   inset: 0;
   z-index: var(--z-index-overlay);
   background-color: var(--overlay);
+}
+
+.modalButton {
+  margin: 12px 0;
 }
