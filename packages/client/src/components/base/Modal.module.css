@@ -5,9 +5,11 @@
   z-index: var(--z-index-popup);
   width: 100%;
   max-width: 1200px;
+  max-height: 80%;
   padding: var(--spacing-lg);
   background-color: var(--modal);
   transform: translate(-50%, -50%);
+  overflow: auto;
 }
 
 .overlay {
