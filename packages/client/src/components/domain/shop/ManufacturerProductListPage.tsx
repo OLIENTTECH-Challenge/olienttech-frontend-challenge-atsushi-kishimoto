@@ -34,17 +34,28 @@ const useHandleProducts = (shopId: string, token: string, manufacturerId: string
 };
 
 const postOrder = (shopId: string, token: string, manufacturerId: string, orders: ItemWithOrder[]) => {
-  const items: OrderItem[] = orders.map((item) => ({ productId: item.id, quantity: item.quantity }));
+  return new Promise((resolve, reject) => {
+    const items: OrderItem[] = orders.map((item) => ({ productId: item.id, quantity: item.quantity }));
 
-  void toast
-    .promise(shopApi.postOrder({ manufacturerId, items, shopId, token }), {
-      loading: '発注中です',
-      success: '発注しました',
-      error: '発注に失敗しました',
-    })
-    .then(() => {
-      window.location.reload();
-    });
+    if (!items.length) {
+      toast.error('発注商品を選択してください');
+      reject(new Error('発注商品がありません'));
+      return;
+    }
+    
+    toast.promise(
+      shopApi.postOrder({ manufacturerId, items, shopId, token }), {
+        loading: '発注中です',
+        success: '発注しました',
+        error: '発注に失敗しました',
+      })
+      .then(() => {
+        resolve(undefined);
+        window.location.reload();
+      }).catch((error) => {
+        reject(error);
+      });
+  });
 };
 
 export const ManufacturerProductListPage = () => {
@@ -176,7 +187,13 @@ export const ManufacturerProductListPage = () => {
           onClose={closeModal}
           onSubmit={() => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            postOrder(shopId, token, manufacturerId!, orders);
+            postOrder(shopId, token, manufacturerId!, orders)
+            .then(() => {
+              closeModal();
+            })
+            .catch(() => {
+              closeModal();
+            });
           }}
         >
           <ModalContent />
