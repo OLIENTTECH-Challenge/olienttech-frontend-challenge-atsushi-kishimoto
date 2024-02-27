@@ -7,10 +7,10 @@
   max-width: 1200px;
   max-height: 80%;
   padding: var(--spacing-lg);
-  border-radius: var(--radius);
-  background-color: var(--modal);
-  transform: translate(-50%, -50%);
   overflow: auto;
+  background-color: var(--modal);
+  border-radius: var(--radius);
+  transform: translate(-50%, -50%);
 }
 
 .overlay {
@@ -22,8 +22,8 @@
 
 .modalActions {
   display: flex;
-  justify-content: flex-end;
   gap: var(--spacing-lg);
+  justify-content: flex-end;
 }
 
 .modalButton {
