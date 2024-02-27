@@ -8,5 +8,6 @@
 }
 
 .modalButton {
-  margin: 12px 0;
+  margin: var(--spacing-lg) 0;
+  float: right;
 }
