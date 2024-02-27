@@ -7,14 +7,21 @@ import { useParams } from 'react-router-dom';
 import * as shopApi from '@/api/shop';
 import { useAuthLoaderData } from '@/hooks/useAuthLoaderData';
 import { Button } from '@/components/base/Button';
+import toast from 'react-hot-toast';
 
 type Response = Awaited<ReturnType<typeof shopApi.fetchHandlingProducts>>;
 
-const useHandleProducts = (manufacturerId: string) => {
-  const loaderData = useAuthLoaderData();
-  const shopId = loaderData.id;
-  const token = loaderData.token;
+type ResolvedType<T> = T extends Promise<infer R> ? R : T;
+type ItemWithOrder = ResolvedType<ReturnType<typeof shopApi.fetchHandlingProducts>>['products'][number] & {
+  quantity: number;
+};
 
+type OrderItem = {
+  productId: string;
+  quantity: number;
+};
+
+const useHandleProducts = (shopId: string, token: string, manufacturerId: string) => {
   const [products, setProducts] = useState<Response>();
 
   useEffect(() => {
@@ -26,12 +33,42 @@ const useHandleProducts = (manufacturerId: string) => {
   return { products };
 };
 
+const postOrder = (shopId: string, token: string, manufacturerId: string, orders: ItemWithOrder[]) => {
+  return new Promise((resolve, reject) => {
+    const items: OrderItem[] = orders.map((item) => ({ productId: item.id, quantity: item.quantity }));
+
+    if (!items.length) {
+      toast.error('発注商品を選択してください');
+      reject(new Error('発注商品がありません'));
+      return;
+    }
+
+    toast
+      .promise(shopApi.postOrder({ manufacturerId, items, shopId, token }), {
+        loading: '発注中です',
+        success: '発注しました',
+        error: '発注に失敗しました',
+      })
+      .then(() => {
+        resolve(undefined);
+        window.location.reload();
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const ManufacturerProductListPage = () => {
+  const loaderData = useAuthLoaderData();
+  const shopId = loaderData.id;
+  const token = loaderData.token;
+
   const params = useParams();
   const manufacturerId = params['manufacturerId'];
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { products } = useHandleProducts(manufacturerId!);
+  const { products } = useHandleProducts(shopId, token, manufacturerId!);
   const items = products?.products ?? [];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,21 +79,19 @@ export const ManufacturerProductListPage = () => {
     setIsModalOpen(false);
   };
 
-  type ItemWithOrder = (typeof items)[number] & {
-    order: number;
-  };
-
-  const InitialModalContent = () => <div></div>;
+  const InitialModalContent = () => <></>;
   InitialModalContent.displayName = 'InitialModalContent';
 
+  const [orders, setOrders] = useState<ItemWithOrder[]>([]);
   const [ModalContent, setModalContent] = useState(() => InitialModalContent);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // デフォルトの動作をキャンセル
 
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const orders: ItemWithOrder[] = items
+    const newOrders: ItemWithOrder[] = items
       .map((item) => {
         const value = formData.get(`order_${item.id}`);
         return {
@@ -65,18 +100,27 @@ export const ManufacturerProductListPage = () => {
           description: item.description,
           categories: item.categories,
           stock: item.stock,
-          order: value ? Number(value) : 0,
+          quantity: value ? Number(value) : 0,
         };
       })
-      .filter((order) => order.order > 0); // orderが1以上のものを抽出
+      .filter((order) => order.quantity > 0); // orderが1以上のものを抽出
 
-    const NewModalContent = () => <Table columns={modalColumns} data={orders} />;
+    setOrders(newOrders);
+
+    const NewModalContent = () => <Table columns={modalColumns} data={newOrders} />;
     NewModalContent.displayName = 'NewModalContent';
 
     setModalContent(() => NewModalContent);
     openModal(); // モーダルを開く
 
     return;
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    // NOTE: Enterキーが押された場合、フォームの送信を防止する
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
   };
 
   const columns: Column<(typeof items)[number]>[] = [
@@ -136,17 +180,30 @@ export const ManufacturerProductListPage = () => {
     },
     {
       header: '発注',
-      accessor: (item) => item.order,
+      accessor: (item) => item.quantity,
     },
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <div>
         <div className={styles.modalButton}>
-          <Button variant='outlined'>発注</Button>
+          <Button variant='filled'>発注</Button>
         </div>
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onSubmit={() => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            postOrder(shopId, token, manufacturerId!, orders)
+              .then(() => {
+                closeModal();
+              })
+              .catch(() => {
+                closeModal();
+              });
+          }}
+        >
           <ModalContent />
         </Modal>
       </div>
