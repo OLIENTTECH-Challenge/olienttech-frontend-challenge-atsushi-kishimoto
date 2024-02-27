@@ -116,6 +116,13 @@ export const ManufacturerProductListPage = () => {
     return;
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    // NOTE: Enterキーが押された場合、フォームの送信を防止する
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   const columns: Column<(typeof items)[number]>[] = [
     {
       header: 'ID',
@@ -178,10 +185,10 @@ export const ManufacturerProductListPage = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <div>
         <div className={styles.modalButton}>
-          <Button variant='outlined'>発注</Button>
+          <Button variant='filled'>発注</Button>
         </div>
         <Modal
           isOpen={isModalOpen}

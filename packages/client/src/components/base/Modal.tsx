@@ -18,14 +18,16 @@ export const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, onSubmi
       <div className={styles.modal}>
         {children}
         <div className={styles.modalButton}>
-          {onSubmit && (
-            <Button variant='outlined' onClick={onSubmit}>
-              発注
+          <div className={styles.modalActions}>
+            <Button variant='outlined' onClick={onClose}>
+              閉じる
             </Button>
-          )}
-          <Button variant='outlined' onClick={onClose}>
-            閉じる
-          </Button>
+            {onSubmit && (
+              <Button variant='filled' onClick={onSubmit}>
+                発注
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </>
