@@ -497,7 +497,7 @@ app.openapi(
     if (!items.length) {
       return c.jsonT(AppResponse.failure('発注商品がありません'), 422);
     }
-    
+
     if (items.filter((item) => item.quantity <= 0).length > 0) {
       return c.jsonT(AppResponse.failure('quantityは0以上で入力してください'), 422);
     }

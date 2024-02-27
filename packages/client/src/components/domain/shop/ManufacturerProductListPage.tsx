@@ -42,9 +42,9 @@ const postOrder = (shopId: string, token: string, manufacturerId: string, orders
       reject(new Error('発注商品がありません'));
       return;
     }
-    
-    toast.promise(
-      shopApi.postOrder({ manufacturerId, items, shopId, token }), {
+
+    toast
+      .promise(shopApi.postOrder({ manufacturerId, items, shopId, token }), {
         loading: '発注中です',
         success: '発注しました',
         error: '発注に失敗しました',
@@ -52,7 +52,8 @@ const postOrder = (shopId: string, token: string, manufacturerId: string, orders
       .then(() => {
         resolve(undefined);
         window.location.reload();
-      }).catch((error) => {
+      })
+      .catch((error) => {
         reject(error);
       });
   });
@@ -188,12 +189,12 @@ export const ManufacturerProductListPage = () => {
           onSubmit={() => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             postOrder(shopId, token, manufacturerId!, orders)
-            .then(() => {
-              closeModal();
-            })
-            .catch(() => {
-              closeModal();
-            });
+              .then(() => {
+                closeModal();
+              })
+              .catch(() => {
+                closeModal();
+              });
           }}
         >
           <ModalContent />
