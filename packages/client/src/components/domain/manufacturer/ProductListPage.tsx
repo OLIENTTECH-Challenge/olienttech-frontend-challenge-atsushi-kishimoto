@@ -39,7 +39,7 @@ const useSearch = (products: Response) => {
   const [filteredProducts, setFilteredProducts] = useState<Response>(products);
 
   useEffect(() => {
-    const result = products.filter(product => product.name.includes(searchInput));
+    const result = products.filter((product) => product.name.includes(searchInput));
     setFilteredProducts(result);
   }, [searchInput, products]);
 
@@ -48,7 +48,7 @@ const useSearch = (products: Response) => {
   };
 
   return { filteredProducts, handleSearchChange };
-}
+};
 
 export const ProductListPage = () => {
   const targetProductId = useRef<string | null>(null);
@@ -141,7 +141,7 @@ export const ProductListPage = () => {
     <>
       <div>
         <Search />
-        <TextInput name={'searchInput'} onChange={handleSearchChange}/>
+        <TextInput name={'searchInput'} onChange={handleSearchChange} />
       </div>
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         <Table columns={columns} data={filteredProducts} />
