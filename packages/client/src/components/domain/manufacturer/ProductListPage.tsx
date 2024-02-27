@@ -39,7 +39,7 @@ const useSearch = (products: Response) => {
   const [filteredProducts, setFilteredProducts] = useState<Response>(products);
 
   useEffect(() => {
-    const result = products.filter((product) => product.name.includes(searchInput));
+    const result = products.filter((product) => product.name.startsWith(searchInput));
     setFilteredProducts(result);
   }, [searchInput, products]);
 
