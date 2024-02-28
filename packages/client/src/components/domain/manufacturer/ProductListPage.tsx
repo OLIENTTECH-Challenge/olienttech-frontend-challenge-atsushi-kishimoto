@@ -139,8 +139,8 @@ export const ProductListPage = () => {
 
   return (
     <>
-      <div>
-        <Search />
+      <div className={styles.search}>
+        <Search size={32} className={styles.searchIcon}/>
         <TextInput name={'searchInput'} onChange={handleSearchChange} />
       </div>
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>

@@ -10,3 +10,12 @@
 .priceCell {
   white-space: nowrap;
 }
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  margin-right: var(--spacing-sm);
+}
