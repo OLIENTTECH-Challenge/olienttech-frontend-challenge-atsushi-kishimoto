@@ -19,3 +19,8 @@
 .searchIcon {
   margin-right: var(--spacing-sm);
 }
+
+.lowStock {
+  background: var(--caution-background);
+  border: 5px solid var(--caution);
+}

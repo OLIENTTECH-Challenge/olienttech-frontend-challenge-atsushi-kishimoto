@@ -73,6 +73,8 @@
     --ring: #17171b;
     --overlay: rgb(0 0 0 / 70%);
     --modal: #f9f9f9;
+    --caution: #e44;
+    --caution-background: #ffd4d4;
     --transparent: transparent;
     --z-index-overlay: 50;
     --z-index-popup: 100;
