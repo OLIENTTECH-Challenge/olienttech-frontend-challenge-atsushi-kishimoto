@@ -5,7 +5,7 @@ export type Column<T extends object> = {
   accessor: (item: T) => React.ReactNode;
 };
 
-type RowStyleCondition<T extends object>= {
+type RowStyleCondition<T extends object> = {
   condition: (item: T) => boolean; // 条件を評価する関数
   className: string; // 条件が真の場合に適用するスタイルのクラス名
 };
