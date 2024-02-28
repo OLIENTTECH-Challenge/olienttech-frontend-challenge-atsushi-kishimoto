@@ -247,7 +247,7 @@ app.openapi(
           include: {
             items: true,
           },
-        }
+        },
       },
     });
 
@@ -268,15 +268,18 @@ app.openapi(
       orderQuantity: 0,
     }));
 
-    const getOrder = manufacturer.orders.flatMap(({ items }) => 
-      items.map(({ productId, quantity }) => ({ productId, quantity }))
+    const getOrder = manufacturer.orders.flatMap(({ items }) =>
+      items.map(({ productId, quantity }) => ({ productId, quantity })),
     );
 
     // getOrderからproductIdをキーとするマップを作成
-    const orderQuantityMap: Record<string, number> = getOrder.reduce((acc: Record<string, number>, { productId, quantity }) => {
-      acc[productId] = (acc[productId] ?? 0) + quantity;
-      return acc;
-    }, {});
+    const orderQuantityMap: Record<string, number> = getOrder.reduce(
+      (acc: Record<string, number>, { productId, quantity }) => {
+        acc[productId] = (acc[productId] || 0) + quantity;
+        return acc;
+      },
+      {},
+    );
 
     // handlingProductsをループし、orderQuantityMapを使用してorderQuantityを更新
     const updatedHandlingProducts = handlingProducts.map((product) => {
