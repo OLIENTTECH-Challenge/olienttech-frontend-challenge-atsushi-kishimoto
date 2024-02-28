@@ -22,7 +22,7 @@ const useHandleProducts = () => {
   useEffect(() => {
     void manufacturerApi.fetchHandlingProducts({ manufacturerId, token }).then((products) => {
       setProducts(products);
-      setTimeout(() => setIsLoading(false), 100); // 描画されるまでの時間を稼ぐ
+      setTimeout(() => { setIsLoading(false); }, 100); // 描画されるまでの時間を稼ぐ
     });
   }, [manufacturerId, token]);
 

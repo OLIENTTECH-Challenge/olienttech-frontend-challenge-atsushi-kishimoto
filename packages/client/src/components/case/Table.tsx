@@ -20,7 +20,6 @@ type TableProps<T extends object> = {
 };
 
 export const Table = <T extends object>({ columns, data, onClick, rowStyleCondition, isLoading }: TableProps<T>) => {
-
   // SkeletonTable
   if (isLoading) {
     return (
@@ -48,7 +47,7 @@ export const Table = <T extends object>({ columns, data, onClick, rowStyleCondit
       </table>
     );
   }
-  
+
   return (
     <table className={styles.table}>
       <thead className={styles.thead}>
