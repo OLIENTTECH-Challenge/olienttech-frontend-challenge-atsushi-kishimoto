@@ -10,8 +10,16 @@
   justify-content: center;
 }
 
+/* スマホサイズのとき */
+@media (width <= 768px) {
+  .linkList {
+    flex-wrap: wrap;
+  }
+}
+
 .linkCard {
   width: 100%;
+  padding-bottom: var(--spacing-md);
 }
 
 .logoutButton {

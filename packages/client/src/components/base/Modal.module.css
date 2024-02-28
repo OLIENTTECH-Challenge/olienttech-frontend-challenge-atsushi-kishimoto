@@ -27,5 +27,5 @@
 }
 
 .modalButton {
-  margin: 12px 0;
+  margin-top: var(--spacing-md);
 }

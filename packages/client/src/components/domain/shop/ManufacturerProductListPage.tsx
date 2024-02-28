@@ -55,7 +55,9 @@ const postOrder = (shopId: string, token: string, manufacturerId: string, orders
       })
       .then(() => {
         resolve(undefined);
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       })
       .catch((error) => {
         reject(error);
