@@ -75,6 +75,8 @@
     --modal: #f9f9f9;
     --caution: #e44;
     --caution-background: #ffd4d4;
+    --skeleton: #eee;
+    --skeleton-pulse: #f5f5f5;
     --transparent: transparent;
     --z-index-overlay: 50;
     --z-index-popup: 100;
