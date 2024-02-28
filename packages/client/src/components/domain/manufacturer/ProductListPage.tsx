@@ -127,6 +127,11 @@ export const ProductListPage = () => {
       width: '88.97px',
     },
     {
+      header: '発注数',
+      accessor: (item) => item.orderQuantity,
+      width: '88.97px',
+    },
+    {
       header: '在庫',
       accessor: (item) => (
         <div className={styles.stockCell}>
