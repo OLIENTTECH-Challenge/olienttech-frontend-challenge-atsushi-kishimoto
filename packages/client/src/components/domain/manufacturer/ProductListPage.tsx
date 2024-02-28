@@ -144,7 +144,14 @@ export const ProductListPage = () => {
         <TextInput name={'searchInput'} onChange={handleSearchChange} />
       </div>
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-        <Table columns={columns} data={filteredProducts} />
+        <Table
+          columns={columns}
+          data={filteredProducts}
+          rowStyleCondition={{
+            condition: (item) => item.stock <= 5, // 在庫が5以下の場合にスタイルを適用
+            className: styles.lowStock, // 低在庫のスタイル
+          }}
+        />
       </form>
     </>
   );
