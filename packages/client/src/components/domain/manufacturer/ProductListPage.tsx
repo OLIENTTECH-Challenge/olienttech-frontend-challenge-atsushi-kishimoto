@@ -2,7 +2,7 @@ import { TextInput } from '@/components/base/TextInput';
 import { Column, Table } from '@/components/case/Table';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './ProductListPage.module.css';
-import { Check } from 'lucide-react';
+import { Check, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import * as manufacturerApi from '@/api/manufacturer';
 import { useAuthLoaderData } from '@/hooks/useAuthLoaderData';
@@ -34,10 +34,27 @@ const useHandleProducts = () => {
   return { products, mutateUpdateStock };
 };
 
+const useSearch = (products: Response) => {
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState<Response>(products);
+
+  useEffect(() => {
+    const result = products.filter((product) => product.name.startsWith(searchInput));
+    setFilteredProducts(result);
+  }, [searchInput, products]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  return { filteredProducts, handleSearchChange };
+};
+
 export const ProductListPage = () => {
   const targetProductId = useRef<string | null>(null);
 
   const { products, mutateUpdateStock } = useHandleProducts();
+  const { filteredProducts, handleSearchChange } = useSearch(products);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -121,8 +138,14 @@ export const ProductListPage = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-      <Table columns={columns} data={products} />
-    </form>
+    <>
+      <div className={styles.search}>
+        <Search size={32} className={styles.searchIcon} />
+        <TextInput name={'searchInput'} onChange={handleSearchChange} />
+      </div>
+      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+        <Table columns={columns} data={filteredProducts} />
+      </form>
+    </>
   );
 };
