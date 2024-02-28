@@ -23,14 +23,18 @@ type OrderItem = {
 
 const useHandleProducts = (shopId: string, token: string, manufacturerId: string) => {
   const [products, setProducts] = useState<Response>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     void shopApi.fetchHandlingProducts({ shopId, manufacturerId, token }).then((products) => {
       setProducts(products);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 100); // 描画されるまでの時間を稼ぐ
     });
   }, [shopId, manufacturerId, token]);
 
-  return { products };
+  return { products, isLoading };
 };
 
 const postOrder = (shopId: string, token: string, manufacturerId: string, orders: ItemWithOrder[]) => {
@@ -68,7 +72,7 @@ export const ManufacturerProductListPage = () => {
   const manufacturerId = params['manufacturerId'];
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { products } = useHandleProducts(shopId, token, manufacturerId!);
+  const { products, isLoading } = useHandleProducts(shopId, token, manufacturerId!);
   const items = products?.products ?? [];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,22 +131,27 @@ export const ManufacturerProductListPage = () => {
     {
       header: 'ID',
       accessor: (item) => item.id,
+      width: '232.13px',
     },
     {
       header: '商品名',
       accessor: (item) => item.name,
+      width: '169.59px',
     },
     {
       header: '商品説明',
       accessor: (item) => item.description,
+      width: '313.33px',
     },
     {
       header: '商品カテゴリ',
       accessor: (item) => item.categories.map((category) => category.name).join('・'),
+      width: '325.91px',
     },
     {
       header: '在庫',
       accessor: (item) => item.stock,
+      width: '65px',
     },
     {
       header: '発注',
@@ -158,6 +167,7 @@ export const ManufacturerProductListPage = () => {
           />
         </div>
       ),
+      width: '93.05px',
     },
   ];
 
@@ -207,7 +217,7 @@ export const ManufacturerProductListPage = () => {
           <ModalContent />
         </Modal>
       </div>
-      <Table columns={columns} data={items} />
+      <Table columns={columns} data={items} isLoading={isLoading} />
     </form>
   );
 };
