@@ -15,7 +15,10 @@ export const ShopLayout = () => {
     breadcrumbItems = [...breadcrumbItems, { href: '/shop/manufacturers', title: '製造会社一覧' }];
   }
   if (isManufacturerProductListPage) {
-    breadcrumbItems = [...breadcrumbItems, { href: '/shop/manufacturers/:manufacturerId/products', title: '取り扱い商品一覧' }];
+    breadcrumbItems = [
+      ...breadcrumbItems,
+      { href: '/shop/manufacturers/:manufacturerId/products', title: '取り扱い商品一覧' },
+    ];
   }
   if (isLoginPage) {
     breadcrumbItems = [];
