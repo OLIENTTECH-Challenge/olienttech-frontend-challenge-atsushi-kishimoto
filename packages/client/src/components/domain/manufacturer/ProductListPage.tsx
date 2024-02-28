@@ -104,27 +104,32 @@ export const ProductListPage = () => {
     {
       header: 'ID',
       accessor: (item) => item.id,
-      width: '220.83px',
+      width: '208.47px',
     },
     {
       header: '商品名',
       accessor: (item) => item.name,
-      width: '157.56px',
+      width: '145.36px',
     },
     {
       header: '商品説明',
       accessor: (item) => item.description,
-      width: '283.92px',
+      width: '254.14px',
     },
     {
       header: '商品カテゴリ',
       accessor: (item) => item.categories.map((category) => category.name).join('・'),
-      width: '299.14px',
+      width: '272.03px',
     },
     {
       header: '単価',
       accessor: (item) => <p className={styles.priceCell}>{`${formatMoney(item.price)}円`}</p>,
       width: '88.97px',
+    },
+    {
+      header: '発注数',
+      accessor: (item) => item.orderQuantity,
+      width: '81px',
     },
     {
       header: '在庫',
