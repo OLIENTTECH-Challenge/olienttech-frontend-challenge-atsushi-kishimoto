@@ -3,6 +3,7 @@ import styles from './Table.module.css';
 export type Column<T extends object> = {
   header: string;
   accessor: (item: T) => React.ReactNode;
+  width?: string;
 };
 
 type RowStyleCondition<T extends object> = {
@@ -15,9 +16,39 @@ type TableProps<T extends object> = {
   data: T[];
   onClick?: (item: T) => void;
   rowStyleCondition?: RowStyleCondition<T>;
+  isLoading?: boolean;
 };
 
-export const Table = <T extends object>({ columns, data, onClick, rowStyleCondition }: TableProps<T>) => {
+export const Table = <T extends object>({ columns, data, onClick, rowStyleCondition, isLoading }: TableProps<T>) => {
+
+  // SkeletonTable
+  if (isLoading) {
+    return (
+      <table className={styles.table}>
+        <thead className={styles.thead}>
+          <tr className={styles.tr}>
+            {columns.map((column) => (
+              <th key={column.header} className={styles.th} style={{ width: column.width }}>
+                {column.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className={styles.tbody}>
+          {Array.from({ length: 20 }, (_, rowIndex) => (
+            <tr key={`row-${rowIndex}`} className={styles.tr}>
+              {columns.map((_column, colIndex) => (
+                <td key={`row-${rowIndex}-col-${colIndex}`} className={`${styles.td} ${styles.skeleton}`}>
+                  &nbsp;
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+  
   return (
     <table className={styles.table}>
       <thead className={styles.thead}>

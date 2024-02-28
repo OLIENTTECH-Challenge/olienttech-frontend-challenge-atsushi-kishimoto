@@ -17,10 +17,12 @@ const useHandleProducts = () => {
   const token = loaderData.token;
 
   const [products, setProducts] = useState<Response>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     void manufacturerApi.fetchHandlingProducts({ manufacturerId, token }).then((products) => {
       setProducts(products);
+      setTimeout(() => setIsLoading(false), 100); // 描画されるまでの時間を稼ぐ
     });
   }, [manufacturerId, token]);
 
@@ -31,7 +33,7 @@ const useHandleProducts = () => {
     [manufacturerId, token],
   );
 
-  return { products, mutateUpdateStock };
+  return { products, mutateUpdateStock, isLoading };
 };
 
 const useSearch = (products: Response) => {
@@ -53,7 +55,7 @@ const useSearch = (products: Response) => {
 export const ProductListPage = () => {
   const targetProductId = useRef<string | null>(null);
 
-  const { products, mutateUpdateStock } = useHandleProducts();
+  const { products, mutateUpdateStock, isLoading } = useHandleProducts();
   const { filteredProducts, handleSearchChange } = useSearch(products);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -100,22 +102,27 @@ export const ProductListPage = () => {
     {
       header: 'ID',
       accessor: (item) => item.id,
+      width: '220.83px',
     },
     {
       header: '商品名',
       accessor: (item) => item.name,
+      width: '157.56px',
     },
     {
       header: '商品説明',
       accessor: (item) => item.description,
+      width: '283.92px',
     },
     {
       header: '商品カテゴリ',
       accessor: (item) => item.categories.map((category) => category.name).join('・'),
+      width: '299.14px',
     },
     {
       header: '単価',
       accessor: (item) => <p className={styles.priceCell}>{`${formatMoney(item.price)}円`}</p>,
+      width: '88.97px',
     },
     {
       header: '在庫',
@@ -134,6 +141,7 @@ export const ProductListPage = () => {
           </Button>
         </div>
       ),
+      width: '145.03px',
     },
   ];
 
@@ -141,7 +149,7 @@ export const ProductListPage = () => {
     <>
       <div className={styles.search}>
         <Search size={32} className={styles.searchIcon} />
-        <TextInput name={'searchInput'} onChange={handleSearchChange} />
+        <TextInput name='searchInput' onChange={handleSearchChange} />
       </div>
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         <Table
@@ -151,6 +159,7 @@ export const ProductListPage = () => {
             condition: (item) => item.stock <= 5, // 在庫が5以下の場合にスタイルを適用
             className: styles.lowStock, // 低在庫のスタイル
           }}
+          isLoading={isLoading}
         />
       </form>
     </>
