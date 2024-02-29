@@ -4,8 +4,10 @@
       "NODE_VERSION": "20.9.0"
     }
   },
-  "rewrites": [{
-    "source": "/(.*)",
-    "destination": "/index.html"
-  }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
